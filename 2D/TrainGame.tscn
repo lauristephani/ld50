@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://train.gd" type="Script" id=1]
+[ext_resource path="res://paddle.png" type="Texture" id=2]
+[ext_resource path="res://RailNetwork.gd" type="Script" id=3]
+
+[node name="TrainGame" type="Node2D"]
+
+[node name="Train" type="Area2D" parent="."]
+position = Vector2( 229, 99 )
+script = ExtResource( 1 )
+speed = 0.5
+
+[node name="Sprite" type="Sprite" parent="Train"]
+rotation = 1.5708
+texture = ExtResource( 2 )
+
+[node name="Rails" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="RailPoints" type="Node2D" parent="Rails"]
+position = Vector2( 60, 60 )
+
+[node name="RailPoints2" type="Node2D" parent="Rails"]
+position = Vector2( 109, 65 )
+
+[node name="RailPoints3" type="Node2D" parent="Rails"]
+position = Vector2( 116, 101 )
+
+[node name="RailPoints4" type="Node2D" parent="Rails"]
+position = Vector2( 80, 115 )
+
+[node name="RailPoints5" type="Node2D" parent="Rails"]
+position = Vector2( 46, 92 )
