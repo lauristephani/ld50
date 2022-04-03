@@ -4,7 +4,7 @@
 
 [sub_resource type="ShaderMaterial" id=2]
 
-[node name="Rail" type="Spatial"]
+[node name="Rail" type="Area"]
 
 [node name="CSGMesh" type="CSGMesh" parent="."]
 transform = Transform( -0.8, 0, 1.1365e-08, 0, 0.04, 0, -6.99382e-08, 0, -0.13, 0.00505367, 0, -0.084054 )
