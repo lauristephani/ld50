@@ -1,16 +1,18 @@
-extends Spatial
+extends Area
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 var next = []
+var next_index = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
+func _input_event(camera, event, click_position, click_normal, shape_idx):
+	var number_of_next = next.size()
+	if (event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT):
+		next_index = (next_index + 1) % number_of_next
+		print("next index " + str(next_index))
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func get_next_node():
+	return next[next_index]

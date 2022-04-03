@@ -30,4 +30,4 @@ func _process(delta):
 	if distance > travel_distance:
 		transform.origin = transform.origin + (direction * travel_distance)
 	else:
-		current_node = current_node.next[0]
+		current_node = current_node.get_next_node()

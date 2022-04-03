@@ -20,33 +20,13 @@ func _ready():
 			nodes[i].next.append(nodes[i - 1])
 	nodes[0].next.append(nodes[number_of_nodes - 1])
 
-	var rail_points = get_children()
-	var rail_count = rail_points.size()
-	for i in rail_count:
-		var rail = rail_points[i]
-		var next_rail = rail_points[(i+1)%rail_count]
-		var gap_length = (rail.transform.origin - next_rail.transform.origin).length()
-		print(str(gap_length))
-		var rail_instance = rail_prefab.instance() as Spatial
-		rail.add_child(rail_instance)
-		rail_instance.scale.z = gap_length/2
-		rail.look_at(next_rail.transform.origin, Vector3.UP)
 
+	for node in nodes:
+		for next_node in node.next:
+			var gap_length = (next_node.transform.origin - node.transform.origin).length()
+			print(str(gap_length))
+			var rail_instance = rail_prefab.instance() as Spatial
+			node.add_child(rail_instance)
+			rail_instance.scale.z = gap_length/2
+			rail_instance.look_at(next_node.transform.origin, Vector3.UP)
 
-#######
-#
-#var flagPrev = Vector2() # Give here a good starting value.
-#var flag = flagPacked.instance()
-#
-#var newPos = Vector2(flagPrev.x + rand(5, 9), rand(30, 50)) # This here sets pos based on the previous X value.
-
-##########################
-
-#flag.set_pos(newPos)
-#flagPrev = newPos #Update the previous in each flag spawn.
-#
-#get_tree().get_root().add_child(flag)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
