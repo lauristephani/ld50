@@ -7,6 +7,16 @@
 [node name="Rail" type="Spatial"]
 
 [node name="CSGMesh" type="CSGMesh" parent="."]
-transform = Transform( 0.8, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, -1 )
+transform = Transform( -0.8, 0, 1.1365e-08, 0, 0.04, 0, -6.99382e-08, 0, -0.13, 0.00505367, 0, -0.084054 )
+mesh = SubResource( 1 )
+material = SubResource( 2 )
+
+[node name="CSGMesh2" type="CSGMesh" parent="."]
+transform = Transform( -0.06, 0, 2.62268e-08, 0, 0.1, 0, -5.24537e-09, 0, -0.3, 0.50297, 0.2, 0.092208 )
+mesh = SubResource( 1 )
+material = SubResource( 2 )
+
+[node name="CSGMesh3" type="CSGMesh" parent="."]
+transform = Transform( -0.06, 0, 2.62268e-08, 0, 0.1, 0, -5.24537e-09, 0, -0.3, -0.496958, 0.2, 0.080183 )
 mesh = SubResource( 1 )
 material = SubResource( 2 )

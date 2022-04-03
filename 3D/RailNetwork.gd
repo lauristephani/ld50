@@ -3,15 +3,17 @@ extends Spatial
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-onready var rail_node_prefab = preload("res://RailNode.tscn")
-onready var rail_prefab = preload("res://Rail.tscn")
+onready var nodemesh_prefab = preload("res://RailNode.tscn")
+onready var railmesh_prefab = preload("res://Rail.tscn")
+
+export var number_of_nodes = 5
+export var railmesh_length = 0.50
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var number_of_nodes = 5
 	var nodes = []
 	for i in number_of_nodes:
-		var node = rail_node_prefab.instance()
+		var node = nodemesh_prefab.instance()
 		add_child(node)
 		var angle = (i as float) / (number_of_nodes as float) * 6.28318
 		node.transform.origin = Vector3(sin(angle) * 20, 0, cos(angle) * 20)
@@ -21,32 +23,23 @@ func _ready():
 	nodes[0].next.append(nodes[number_of_nodes - 1])
 
 	var rail_points = get_children()
-	var rail_count = rail_points.size()
-	for i in rail_count:
-		var rail = rail_points[i]
-		var next_rail = rail_points[(i+1)%rail_count]
-		var gap_length = (rail.transform.origin - next_rail.transform.origin).length()
-		print(str(gap_length))
-		var rail_instance = rail_prefab.instance() as Spatial
-		rail.add_child(rail_instance)
-		rail_instance.scale.z = gap_length/2
-		rail.look_at(next_rail.transform.origin, Vector3.UP)
+	var segment_count = rail_points.size()
+	for i in segment_count:
+		var segment = rail_points[i]
+		var next_segment = rail_points[(i+1)%segment_count]
+		generate_railmesh(segment, next_segment)
 
+func generate_railmesh(segment, next_segment):
+	var gap = (segment.transform.origin - next_segment.transform.origin)
+	var railmesh_count = gap.length() / railmesh_length
+	var direction = gap.normalized()
+	for i in railmesh_count:
+		var railmesh_instance = railmesh_prefab.instance() as Spatial
+		var nextpos = segment.transform.origin as Vector3
+#		railmesh_instance.global_rotate(Vector3.UP, segment.transform.origin.angle_to(next_segment.transform.origin))
+		railmesh_instance.look_at(railmesh_instance.transform.origin + direction, Vector3.UP)
+		railmesh_instance.transform.origin += direction * i * railmesh_length
+		next_segment.add_child(railmesh_instance)
 
-#######
-#
-#var flagPrev = Vector2() # Give here a good starting value.
-#var flag = flagPacked.instance()
-#
-#var newPos = Vector2(flagPrev.x + rand(5, 9), rand(30, 50)) # This here sets pos based on the previous X value.
-
-##########################
-
-#flag.set_pos(newPos)
-#flagPrev = newPos #Update the previous in each flag spawn.
-#
-#get_tree().get_root().add_child(flag)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func generate_nodemesh(segment, next_segment):
+	pass
