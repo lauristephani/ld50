@@ -14,6 +14,7 @@ func _ready():
 	rails = get_node("/root/TrainGame/Network")
 	numberOfCheckPoints = rails.get_child_count()
 	current_node = rails.get_child(0)
+	transform.origin = current_node.transform.origin
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

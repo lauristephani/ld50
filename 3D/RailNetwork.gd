@@ -1,13 +1,14 @@
 extends Spatial
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-onready var rail_node_prefab = preload("res://RailNode.tscn")
-onready var rail_prefab = preload("res://Rail.tscn")
+onready var nodemesh_prefab = preload("res://RailNode.tscn")
+onready var railmesh_prefab = preload("res://Rail.tscn")
+
+export var railmesh_length = 0.50
+
 var nodes = []
 var grid = {}
-var grid_size = 15
+var grid_size = 10
+var branch_count = 1
 var cell_size = 5
 
 # Called when the node enters the scene tree for the first time.
@@ -32,7 +33,7 @@ func _ready():
 #	var direction = get_random_direction_for_position(random_node.grid_position)
 #	step_in_direction(random_node.grid_position, direction, grid_size)
 	
-	for branch in 40:
+	for branch in branch_count:
 		var random_node = nodes[randi() % nodes.size()]
 		var current_step = random_node.grid_position
 		var prev_step = random_node.prev[0].grid_position
@@ -44,14 +45,11 @@ func _ready():
 				prev_step = current_step
 				current_step = step.current
 	
-	for node in nodes:
-		for next_node in node.next:
-			var gap_length = (next_node.transform.origin - node.transform.origin).length()
-			print(str(gap_length))
-			var rail_instance = rail_prefab.instance() as Spatial
-			node.add_child(rail_instance)
-			rail_instance.scale.z = gap_length/2
-			rail_instance.look_at(next_node.transform.origin, Vector3.UP)
+	var segment_count = nodes.size()
+	for i in segment_count:
+		var segment = nodes[i]
+		for next_segment in segment.next:
+			generate_railmesh(segment, next_segment)
 
 func to_tile_index(x, y):
 	return y * grid_size + x
@@ -66,11 +64,11 @@ func is_in(position):
 	return position.x >= 0 && position.y >= 0 && position.x < grid_size && position.y < grid_size
 
 func create_node_at(x, y):
-		var node = rail_node_prefab.instance()
+		var node = nodemesh_prefab.instance()
 		var decal =  - grid_size * cell_size / 2
 		add_child(node)
 		nodes.append(node)
-		node.transform.origin = Vector3(x * cell_size + decal + (y % 2 * cell_size), 0, y * cell_size + decal)
+		node.transform.origin = Vector3(x * cell_size + decal, 0, y * cell_size + decal)
 		grid[to_tile_index(x, y)] = node
 		node.grid_position = {x = x, y = y}
 		return node
@@ -140,6 +138,8 @@ func step_in_direction(position, direction, nb_step):
 func chain_node(prev_node, next_node):
 	prev_node.next.append(next_node)
 	next_node.prev.append(prev_node)
+	prev_node.refresh_switch()
+	next_node.refresh_switch()
 	
 	
 func generate_railmesh(segment, next_segment):

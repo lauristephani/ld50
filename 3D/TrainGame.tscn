@@ -10,7 +10,6 @@
 
 [node name="Network" type="Spatial" parent="."]
 script = ExtResource( 3 )
-number_of_nodes = 12
 
 [node name="Train" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.30758 )
@@ -23,7 +22,7 @@ mesh = ExtResource( 2 )
 material = SubResource( 2 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.817044, 0.576575, 0, -0.576575, 0.817044, 0, 119.811, 172.779 )
+transform = Transform( 1, 0, 0, 0, 0.817044, 0.576575, 0, -0.576575, 0.817044, 0, 158.105, 227.044 )
 fov = 10.0
 size = 50.0
 far = 1000.0
